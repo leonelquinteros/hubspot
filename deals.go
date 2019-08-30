@@ -33,26 +33,15 @@ type DealsResponse struct {
 
 // DealProperties object
 type DealProperties struct {
-	Amount         DealProperty `json:"amount"`
-	Dealstage      DealProperty `json:"dealstage"`
-	Pipeline       DealProperty `json:"pipeline"`
-	Closedate      DealProperty `json:"closedate"`
-	Createdate     DealProperty `json:"createdate"`
-	HubspotOwnerID DealProperty `json:"hubspot_owner_id"`
-	HsCreatedate   DealProperty `json:"hs_createdate"`
-	Dealtype       DealProperty `json:"dealtype"`
-	Dealname       DealProperty `json:"dealname"`
-}
-
-// DealProperty object
-type DealProperty struct {
-	Name      string         `json:"name"`
-	Value     string         `json:"value"`
-	Timestamp int64          `json:"timestamp"`
-	Source    string         `json:"source"`
-	SourceID  string         `json:"sourceId"`
-	SourceVid []int          `json:"sourceVid"`
-	Versions  []DealProperty `json:"versions"`
+	Amount         ResponseProperty `json:"amount"`
+	Dealstage      ResponseProperty `json:"dealstage"`
+	Pipeline       ResponseProperty `json:"pipeline"`
+	Closedate      ResponseProperty `json:"closedate"`
+	Createdate     ResponseProperty `json:"createdate"`
+	HubspotOwnerID ResponseProperty `json:"hubspot_owner_id"`
+	HsCreatedate   ResponseProperty `json:"hs_createdate"`
+	Dealtype       ResponseProperty `json:"dealtype"`
+	Dealname       ResponseProperty `json:"dealname"`
 }
 
 // Get Deal

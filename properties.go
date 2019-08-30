@@ -7,3 +7,14 @@ type Property struct {
 	Property string      `json:"property,omitempty"`
 	Value    interface{} `json:"value"`
 }
+
+// ResponseProperty object is the format on which response objects format their property information.
+type ResponseProperty struct {
+	Name      string             `json:"name"`
+	Value     string             `json:"value"`
+	Timestamp int64              `json:"timestamp"`
+	Source    string             `json:"source"`
+	SourceID  string             `json:"sourceId"`
+	SourceVid []int              `json:"sourceVid"`
+	Versions  []ResponseProperty `json:"versions"`
+}
