@@ -91,9 +91,6 @@ func TestContacts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if r.ErrorResponse.Status == "error" {
-		t.Fatal(r.ErrorResponse.Message)
-	}
 
 	//t.Logf("%+v", r)
 	//t.Logf("%+v", contact)

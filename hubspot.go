@@ -1,4 +1,5 @@
 // Package hubspot is a SDK client library for HubSpot's API
+//
 // TODO: Write docs here...
 package hubspot
 
