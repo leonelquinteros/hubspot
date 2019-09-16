@@ -23,12 +23,12 @@ type DealsRequest struct {
 // DealsResponse object
 type DealsResponse struct {
 	ErrorResponse
-	PortalID                  int                      `json:"portalId"`
-	DealID                    int                      `json:"dealId"`
-	IsDeleted                 bool                     `json:"isDeleted"`
-	Associations              Associations             `json:"associations"`
-	AssociationCreateFailures AssociationCreateFailure `json:"associationCreateFailures"`
-	Properties                DealProperties           `json:"properties"`
+	PortalID                  int                        `json:"portalId"`
+	DealID                    int                        `json:"dealId"`
+	IsDeleted                 bool                       `json:"isDeleted"`
+	Associations              Associations               `json:"associations"`
+	AssociationCreateFailures []AssociationCreateFailure `json:"associationCreateFailures"`
+	Properties                DealProperties             `json:"properties"`
 }
 
 // DealProperties object
