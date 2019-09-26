@@ -21,20 +21,20 @@ import "github.com/leonelquinteros/hubspot"
 
 func main() {
     // Create client object with config from environment variables (HUBSPOT_API_HOST, HUBSPOT_API_KEY, HUBSPOT_OAUTH_TOKEN)
-    c := NewClient(NewClientConfig())
+    c := hubspot.NewClient(hubspot.NewClientConfig())
 
     // Create new contact
-    data := ContactsRequest{
-		Properties: []Property{
-			Property{
+    data := hubspot.ContactsRequest{
+		hubspot.Properties: []hubspot.Property{
+			hubspot.Property{
 				Property: "email",
 				Value:    "contact@example.com",
 			},
-			Property{
+			hubspot.Property{
 				Property: "firstname",
 				Value:    "Contact",
 			},
-			Property{
+			hubspot.Property{
 				Property: "lastname",
 				Value:    "Example",
 			},
