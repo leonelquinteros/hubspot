@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 	"path"
+	"time"
 )
 
 // ClientConfig object used for client creation
@@ -15,6 +17,7 @@ type ClientConfig struct {
 	APIHost    string
 	APIKey     string
 	OAuthToken string
+	HTTPClient *http.Client
 }
 
 // NewClientConfig constructs a ClientConfig object with the environment variables set as default
@@ -33,6 +36,10 @@ type Client struct {
 
 // NewClient constructor
 func NewClient(config ClientConfig) Client {
+	if config.HTTPClient == nil {
+		config.HTTPClient = netClient
+	}
+
 	return Client{
 		config: config,
 	}
@@ -103,10 +110,9 @@ func (c Client) Request(method, endpoint string, data, response interface{}) err
 	req.Header.Add("Content-Type", "application/json")
 
 	// Execute and read response body
-	httpClient := &http.Client{}
-	resp, err := httpClient.Do(req)
+	resp, err := c.config.HTTPClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("hubspot.Client.Request(): httpClient.Do(): %v", err)
+		return fmt.Errorf("hubspot.Client.Request(): c.config.HTTPClient.Do(): %v", err)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
@@ -129,4 +135,14 @@ func (c Client) Request(method, endpoint string, data, response interface{}) err
 
 	// Done!
 	return nil
+}
+
+var netClient = &http.Client{
+	Timeout: time.Second * 10,
+	Transport: &http.Transport{
+		Dial: (&net.Dialer{
+			Timeout: 5 * time.Second,
+		}).Dial,
+		TLSHandshakeTimeout: 5 * time.Second,
+	},
 }
