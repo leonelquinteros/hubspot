@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 )
 
@@ -19,6 +20,20 @@ type ClientConfig struct {
 
 // NewClientConfig constructs a ClientConfig object with the environment variables set as default
 func NewClientConfig() ClientConfig {
+	apiHost := "https://api.hubapi.com"
+	var apiKey string
+	var oauthToken string
+
+	if os.Getenv("HUBSPOT_API_HOST") != "" {
+		apiHost = os.Getenv("HUBSPOT_API_HOST")
+	}
+	if os.Getenv("HUBSPOT_API_KEY") != "" {
+		apiKey = os.Getenv("HUBSPOT_API_KEY")
+	}
+	if os.Getenv("HUBSPOT_OAUTH_TOKEN") != "" {
+		oauthToken = os.Getenv("HUBSPOT_OAUTH_TOKEN")
+	}
+
 	return ClientConfig{
 		APIHost:    apiHost,
 		APIKey:     apiKey,
