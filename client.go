@@ -14,18 +14,23 @@ import (
 
 // ClientConfig object used for client creation
 type ClientConfig struct {
-	APIHost    string
-	APIKey     string
-	OAuthToken string
-	HTTPClient *http.Client
+	APIHost     string
+	APIKey      string
+	OAuthToken  string
+	HTTPTimeout time.Duration
+	DialTimeout time.Duration
+	TLSTimeout  time.Duration
 }
 
 // NewClientConfig constructs a ClientConfig object with the environment variables set as default
 func NewClientConfig() ClientConfig {
 	return ClientConfig{
-		APIHost:    apiHost,
-		APIKey:     apiKey,
-		OAuthToken: oauthToken,
+		APIHost:     apiHost,
+		APIKey:      apiKey,
+		OAuthToken:  oauthToken,
+		HTTPTimeout: 10 * time.Second,
+		DialTimeout: 5 * time.Second,
+		TLSTimeout:  5 * time.Second,
 	}
 }
 
@@ -36,10 +41,6 @@ type Client struct {
 
 // NewClient constructor
 func NewClient(config ClientConfig) Client {
-	if config.HTTPClient == nil {
-		config.HTTPClient = netClient
-	}
-
 	return Client{
 		config: config,
 	}
@@ -110,7 +111,16 @@ func (c Client) Request(method, endpoint string, data, response interface{}) err
 	req.Header.Add("Content-Type", "application/json")
 
 	// Execute and read response body
-	resp, err := c.config.HTTPClient.Do(req)
+	netClient := &http.Client{
+		Timeout: c.config.HTTPTimeout,
+		Transport: &http.Transport{
+			Dial: (&net.Dialer{
+				Timeout: c.config.DialTimeout,
+			}).Dial,
+			TLSHandshakeTimeout: c.config.TLSTimeout,
+		},
+	}
+	resp, err := netClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("hubspot.Client.Request(): c.config.HTTPClient.Do(): %v", err)
 	}
@@ -135,14 +145,4 @@ func (c Client) Request(method, endpoint string, data, response interface{}) err
 
 	// Done!
 	return nil
-}
-
-var netClient = &http.Client{
-	Timeout: time.Second * 10,
-	Transport: &http.Transport{
-		Dial: (&net.Dialer{
-			Timeout: 5 * time.Second,
-		}).Dial,
-		TLSHandshakeTimeout: 5 * time.Second,
-	},
 }
