@@ -42,6 +42,7 @@ type DealProperties struct {
 	HsCreatedate   ResponseProperty `json:"hs_createdate"`
 	Dealtype       ResponseProperty `json:"dealtype"`
 	Dealname       ResponseProperty `json:"dealname"`
+	BuilderToken   ResponseProperty `json:"builder_token"`
 }
 
 // Get Deal
