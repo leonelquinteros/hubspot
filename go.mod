@@ -1,3 +1,3 @@
-module github.com/leonelquinteros/hubspot
+module github.com/myfinder/hubspot
 
-require github.com/leonelquinteros/gorand v1.0.2
+require github.com/myfinder/gorand v1.0.2
